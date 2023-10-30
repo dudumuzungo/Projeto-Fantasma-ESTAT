@@ -88,7 +88,7 @@ adidas_min <- min(adidas$Price, na.rm = TRUE)
 adidas_max <- max(adidas$Price, na.rm = TRUE)
 adidas_quartil_1 <- quantile(adidas$Price, probs = c(0.25), na.rm = TRUE)
 adidas_quartil_3 <- quantile(adidas$Price, probs = c(0.75), na.rm = TRUE)
-adidas_quartil
+adidas_median <- median(adidas$Price, na.rm = TRUE)
 
 hm_sales <- vendas$Brand == 'H&M'
 hm <- vendas[hm_sales,]
@@ -99,7 +99,7 @@ hm_min <- min(hm$Price, na.rm = TRUE)
 hm_max <- max(hm$Price, na.rm = TRUE)
 hm_quartil_1 <- quantile(hm$Price, probs = c(0.25), na.rm = TRUE)
 hm_quartil_3 <- quantile(hm$Price, probs = c(0.75), na.rm = TRUE)
-hm_quartil
+hm_median <- median(hm$Price, na.rm = TRUE)
 
 zara_sales <- vendas$Brand == 'Zara'
 zara <- vendas[zara_sales,]
@@ -110,7 +110,7 @@ zara_min <- min(zara$Price, na.rm = TRUE)
 zara_max <- max(zara$Price, na.rm = TRUE)
 zara_quartil_1 <- quantile(zara$Price, probs = c(0.25), na.rm = TRUE)
 zara_quartil_3 <- quantile(zara$Price, probs = c(0.75), na.rm = TRUE)
-zara_quartil
+zara_median <- median(zara$Price, na.rm = TRUE)
 
 gucci_sales <- vendas$Brand == 'Gucci'
 gucci <- vendas[gucci_sales,]
@@ -121,7 +121,7 @@ gucci_min <- min(gucci$Price, na.rm = TRUE)
 gucci_max <- max(gucci$Price, na.rm = TRUE)
 gucci_quartil_1 <- quantile(gucci$Price, probs = c(0.25), na.rm = TRUE)
 gucci_quartil_3 <- quantile(gucci$Price, probs = c(0.75), na.rm = TRUE)
-gucci_quartil
+gucci_median <- median(gucci$Price, na.rm = TRUE)
 
 nike_sales <- vendas$Brand == 'Nike'
 nike <- vendas[nike_sales,]
@@ -132,11 +132,12 @@ nike_min <- min(nike$Price, na.rm = TRUE)
 nike_max <- max(nike$Price, na.rm = TRUE)
 nike_quartil_1 <- quantile(nike$Price, probs = c(0.25), na.rm = TRUE)
 nike_quartil_3 <- quantile(nike$Price, probs = c(0.75), na.rm = TRUE)
-nike_quartil
+nike_median <- median(nike$Price, na.rm = TRUE)
 
 variacao_precos_marca <- data.frame(Marca = c("Adidas", "H&M", "Zara", "Gucci", "Nike"),
                                     Média = c(adidas_media, hm_media, zara_media, gucci_media, nike_media),
                                     DP = c(adidas_dp, hm_dp, zara_dp, gucci_dp, nike_dp),
+                                    Mediana = c(adidas_median, hm_median, zara_median, gucci_median, nike_median),
                                     CV = c(adidas_cv, hm_cv, zara_cv, gucci_cv, nike_cv),
                                     Mínimo = c(adidas_min, hm_min, zara_min, gucci_min, nike_min),
                                     Q1 = c(adidas_quartil_1, hm_quartil_1, zara_quartil_1, gucci_quartil_1, nike_quartil_1),
