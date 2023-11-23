@@ -13,6 +13,8 @@ library(plyr)
 library(dplyr)
 library(readr)
 library(purrr)
+library(tidyverse)
+library(xtable)
 
 #Workspace e leitura de bancos de dados
 setwd("C:/Users/edusc/Desktop/ESTAT")
@@ -81,7 +83,14 @@ faturamentos
 
 coul <- brewer.pal(5, "Set2") 
 
-barplot(faturamentos, main = "Faturamento", xlab = "Category",ylab = "$", ylim = c(0, 20000),col = "#A11D21")
+barplot(faturamentos, main = "Faturamento", xlab = "Category",ylab = "$", ylim = c(0, 20000),col = "#A11D21") +
+geom_text(
+  aes(label = scales::percent(..count../sum(..count..))),
+  stat = "count",
+  position = position_dodge(width = 0.5),
+  vjust = 5
+)
+
 
 #Análise 2
 unique(vendas$Brand)
@@ -175,7 +184,13 @@ nonkids_vendas <- nokids_vendas[nonas,]
 ggplot(nonkids_vendas, aes(x = Color) ) +
   geom_bar(aes(fill = Category), position = "dodge" ) +
   scale_fill_manual(values=c("#A11D21", 
-                             "#003366"))
+                             "#003366")) +
+  geom_text(
+    aes(label = scales::percent(..count../sum(..count..))),
+    stat = "count",
+    position = position_dodge(width = 0.9),
+    vjust = -0.5
+  )
 
 cat_cor <- table(nonkids_vendas$Category, nonkids_vendas$Color)
 cat_cor
@@ -250,5 +265,42 @@ ggplot(tudo_a5, aes(x = Brand) ) +
   scale_fill_manual(values=c("#A11D21", 
                              "#003366",
                              "#CC9900")) +
+  geom_text(
+    aes(label = scales::percent(..count../sum(..count..))),
+    stat = "count",
+    position = position_dodge(width = 0.5),
+    vjust = 5
+  ) +
   labs(x = 'Marca')
+
+# Análise 6: avaliação média por marca
+
+
+marca1 <- !is.na(vendas$Brand)
+marcas <- vendas[marca1,]
+
+aval <- !is.na(marcas$Rating)
+marca_aval <- marcas[aval,]
+
+
+m_a_dupla <- unique(marca_aval$Unique.ID)
+tab <- marca_aval[m_a_dupla,]
+
+df_unique_specific <- marca_aval[!duplicated(marca_aval[c("Unique.ID")]), ]
+
+
+
+marca_factor <- as.factor(df_unique_specific$Brand)
+
+tab_a6 <- df_unique_specific %>%
+  group_by(as.factor(Brand)) %>%
+  summarise(media_rating <- mean(Rating))
+names(tab_a6) <- c('Marca', 'Média')
+tab_a6 <- tab_a6 %>% arrange(desc(Média))
+tab_a6_tex <- xtable(tab_a6)
+tab_a6_tex
+
+ggplot (df_unique_specific, aes(x = Brand, y = Rating)) + geom_boxplot(fill = c("#A11D21"), width = 0.5) +
+  stat_summary(fun = "mean", geom = "point", shape = 23, size = 3, fill = "white") + 
+  labs(x = "Marca", y = "Avaliação")
 
